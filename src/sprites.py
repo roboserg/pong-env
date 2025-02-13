@@ -67,7 +67,8 @@ class Ball(pygame.sprite.Sprite):
         self.old_rect = self.rect.copy()
         self.direction = pygame.Vector2(choice((1,-1)),uniform(0.7, 0.8) * choice((-1,1)))
         self.hit_this_frame = False  # Add this line to track hits
-    
+        self.previous_direction = self.direction.copy() # Initialize previous_direction
+
     def move(self, dt):
         self.rect.x += self.direction.x * SPEED['ball'] * dt
         self.collision('horizontal')
@@ -111,8 +112,10 @@ class Ball(pygame.sprite.Sprite):
     def reset(self):
         self.rect.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
         self.direction = pygame.Vector2(choice((1,-1)),uniform(0.7, 0.8) * choice((-1,1)))
+        self.previous_direction = self.direction.copy()  # Update previous_direction
 
     def update(self, dt):
+        self.previous_direction = self.direction.copy()  # Store old direction at start
         self.old_rect = self.rect.copy()
         self.move(dt)
         self.wall_collision()

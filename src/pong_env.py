@@ -111,20 +111,18 @@ class PongEnv(gym.Env):
         reward = 0.0
         terminated = False
 
-        # Use ball's built-in hit detection
-        if self.ball.hit_this_frame:
-            reward = 0.1  # Reward for hitting the ball
-            print(f"Hit the ball! Ball pos: ({self.ball.rect.centerx}, {self.ball.rect.centery})")
+        # Check for direction change from positive to negative
+        if self.ball.previous_direction.x > 0 and self.ball.direction.x < 0:
+            reward = 0.1  # Reward for changing direction from positive to negative
+            print("Reward for changing direction from positive to negative")
 
         # Game outcome rewards
         if self.score['player'] > 0:  # Ball passed opponent
             reward = 1.0
             terminated = True
-            print("Player scored!")
         elif self.score['opponent'] > 0:  # Ball passed player
             reward = -1.0
             terminated = True
-            print("Opponent scored!")
 
         # Reset scores if terminated
         if terminated:
