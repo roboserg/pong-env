@@ -2,7 +2,9 @@
 
 A reinforcement learning environment implementing the classic Pong game using Pygame and Gymnasium. The environment includes both a playable version and training capabilities using Stable Baselines 3.
 
-<video src="pong.mp4" width="500" controls></video>
+![Pong RL Demo](pong.gif)
+
+[▶️ Watch full video](pong.mp4)
 
 ## Features
 
