@@ -1,5 +1,7 @@
-from settings import * 
 from random import choice, uniform
+
+from settings import *
+
 
 class AllSprites(pygame.sprite.Group):
     def __init__(self):

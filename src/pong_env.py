@@ -1,9 +1,11 @@
 import gymnasium as gym
-from gymnasium import spaces
 import numpy as np
 import pygame
+from gymnasium import spaces
+
 from settings import *
-from sprites import Ball, Opponent, Player, AllSprites
+from sprites import AllSprites, Ball, Opponent, Player
+
 
 class PongEnv(gym.Env):
     FPS = 30

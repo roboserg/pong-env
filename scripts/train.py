@@ -1,10 +1,13 @@
 import os
 import time
+
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
-from stable_baselines3.common.vec_env import VecNormalize, DummyVecEnv
 from stable_baselines3.common.monitor import Monitor  # Import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
+
 from pong_env import PongEnv
+
 
 def main():
     # Create base log directory

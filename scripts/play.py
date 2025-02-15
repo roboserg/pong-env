@@ -1,4 +1,5 @@
 import pygame
+
 from pong_env import PongEnv
 
 env = PongEnv(render_mode="human")
