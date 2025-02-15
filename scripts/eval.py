@@ -23,7 +23,7 @@ def evaluate_model(model_path, num_episodes=10, render=True):
     env = PongEnv(render_mode="human" if render else None)
     env = Monitor(env, filename=model_dir)
     env = DummyVecEnv([lambda: env])
-    env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10., training=False)
+    env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0, training=False)
 
     # Load the VecNormalize statistics, if they exist
     vec_normalize_path = os.path.join(model_dir, "vecnormalize.pkl")
@@ -52,10 +52,10 @@ def evaluate_model(model_path, num_episodes=10, render=True):
             episode_reward += rewards[0]
             episode_length += 1
             done = dones[0]
-            
+
             if render:
                 env.render()
-                #time.sleep(0.03)
+                # time.sleep(0.03)
 
         total_rewards += episode_reward
         episode_lengths.append(episode_length)
