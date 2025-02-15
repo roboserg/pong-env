@@ -1,19 +1,29 @@
 from settings import * 
 from random import choice, uniform
 
+class AllSprites(pygame.sprite.Group):
+    def __init__(self):
+        super().__init__()
+        self.display_surface = pygame.display.get_surface()
+    
+    def draw(self):
+        for sprite in self:
+            for i in range(5):
+                self.display_surface.blit(sprite.shadow_surf, sprite.rect.topleft + pygame.Vector2(i,i))
+
+        for sprite in self:
+            self.display_surface.blit(sprite.image, sprite.rect)
+
 class Paddle(pygame.sprite.Sprite):
     def __init__(self, groups):
         super().__init__(groups)
 
-        # image 
         self.image = pygame.Surface(SIZE['paddle'], pygame.SRCALPHA)
         pygame.draw.rect(self.image, COLORS['paddle'], pygame.FRect((0,0), SIZE['paddle']), 0, 4)
 
-        # shadow surf
         self.shadow_surf = self.image.copy()
         pygame.draw.rect(self.shadow_surf, COLORS['paddle shadow'], pygame.FRect((0,0), SIZE['paddle']), 0, 4)
 
-        # rect & movement
         self.rect = self.image.get_frect(center = POS['player'])
         self.old_rect = self.rect.copy()
         self.direction = 0
@@ -32,11 +42,10 @@ class Player(Paddle):
     def __init__(self, groups):
         super().__init__(groups)
         self.speed = SPEED['player']
-        self.direction = 0  # Will be set by the agent
+        self.direction = 0
 
     def get_direction(self):
-        # Direction is now controlled by the agent via the direction property
-        pass  # Remove keyboard control
+        pass
     
 class Opponent(Paddle):
     def __init__(self, groups, ball):
@@ -54,20 +63,17 @@ class Ball(pygame.sprite.Sprite):
         self.paddle_sprites = paddle_sprites
         self.update_score = update_score
 
-        # image 
         self.image = pygame.Surface(SIZE['ball'], pygame.SRCALPHA)
         pygame.draw.circle(self.image, COLORS['ball'], (SIZE['ball'][0] / 2,SIZE['ball'][1] / 2), SIZE['ball'][0] / 2)
 
-        # shadow surf
         self.shadow_surf = self.image.copy()
         pygame.draw.circle(self.shadow_surf, COLORS['ball shadow'], (SIZE['ball'][0] / 2,SIZE['ball'][1] / 2), SIZE['ball'][0] / 2)
 
-        # rect & movement
         self.rect = self.image.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
         self.old_rect = self.rect.copy()
         self.direction = pygame.Vector2(choice((1,-1)),uniform(0.7, 0.8) * choice((-1,1)))
-        self.hit_this_frame = False  # Add this line to track hits
-        self.previous_direction = self.direction.copy() # Initialize previous_direction
+        self.hit_this_frame = False
+        self.previous_direction = self.direction.copy()
 
     def move(self, dt):
         self.rect.x += self.direction.x * SPEED['ball'] * dt
@@ -76,18 +82,18 @@ class Ball(pygame.sprite.Sprite):
         self.collision('vertical')
     
     def collision(self, direction):
-        self.hit_this_frame = False  # Reset at start of collision check
+        self.hit_this_frame = False
         for sprite in self.paddle_sprites:
             if sprite.rect.colliderect(self.rect):
                 if direction == 'horizontal':
                     if self.rect.right >= sprite.rect.left and self.old_rect.right <= sprite.old_rect.left:
                         self.rect.right = sprite.rect.left
                         self.direction.x *= -1
-                        self.hit_this_frame = True  # Set when ball hits paddle
+                        self.hit_this_frame = True
                     if self.rect.left <= sprite.rect.right and self.old_rect.left >= sprite.old_rect.right:
                         self.rect.left = sprite.rect.right
                         self.direction.x *= -1
-                        self.hit_this_frame = True  # Set when ball hits paddle
+                        self.hit_this_frame = True
                 else:
                     if self.rect.bottom >= sprite.rect.top and self.old_rect.bottom <= sprite.old_rect.top:
                         self.rect.bottom = sprite.rect.top
@@ -112,10 +118,10 @@ class Ball(pygame.sprite.Sprite):
     def reset(self):
         self.rect.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
         self.direction = pygame.Vector2(choice((1,-1)),uniform(0.7, 0.8) * choice((-1,1)))
-        self.previous_direction = self.direction.copy()  # Update previous_direction
+        self.previous_direction = self.direction.copy()
 
     def update(self, dt):
-        self.previous_direction = self.direction.copy()  # Store old direction at start
+        self.previous_direction = self.direction.copy()
         self.old_rect = self.rect.copy()
         self.move(dt)
         self.wall_collision()

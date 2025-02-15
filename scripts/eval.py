@@ -4,7 +4,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import VecNormalize, DummyVecEnv
 from stable_baselines3.common.monitor import Monitor
 from pong_env import PongEnv
-import time
+
 
 def evaluate_model(model_path, num_episodes=10, render=True):
     """

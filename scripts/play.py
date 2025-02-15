@@ -1,28 +1,23 @@
 import pygame
 from pong_env import PongEnv
 
-# Initialize the environment
 env = PongEnv(render_mode="human")
 observation, _ = env.reset()
 
-# Game loop
 running = True
 while running:
-    action = 0  # Default action is stay
+    action = 0
     
-    # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    # Get pressed keys
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
         action = 1
     elif keys[pygame.K_DOWN]:
         action = 2
     
-    # Step environment
     observation, reward, terminated, truncated, info = env.step(action)
     env.render()
     
