@@ -1,5 +1,7 @@
 from random import choice, uniform
 
+import pygame
+
 from settings import *
 
 

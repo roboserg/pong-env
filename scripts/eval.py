@@ -1,6 +1,5 @@
 import os
 
-import gymnasium as gym
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
@@ -64,7 +63,7 @@ def evaluate_model(model_path, num_episodes=10, render=True):
     mean_reward = total_rewards / num_episodes
     mean_length = sum(episode_lengths) / num_episodes
 
-    print(f"\nEvaluation Results:")
+    print("\nEvaluation Results:")
     print(f"Mean Reward: {mean_reward:.2f}")
     print(f"Mean Episode Length: {mean_length:.2f}")
 

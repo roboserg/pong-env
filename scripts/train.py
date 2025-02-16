@@ -1,5 +1,4 @@
 import os
-import time
 
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
@@ -12,9 +11,7 @@ from pong_env import PongEnv
 def main():
     log_dir = "./logs/"
     os.makedirs(log_dir, exist_ok=True)
-
-    timestamp = int(time.time())
-    run_name = f"05"
+    run_name = "05"
 
     run_dir = os.path.join(log_dir, run_name)
     os.makedirs(run_dir, exist_ok=True)
